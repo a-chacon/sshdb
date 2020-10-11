@@ -14,7 +14,13 @@ except KeyError:
 VERSION = "1.0.0"
 
 USAGE = """
-SSHManager, easy way to remember your ssh conections.
+         _
+ ___ ___| |_ ._ _ _  ___ ._ _  ___  ___  ___  _ _
+<_-<<_-<| . || ' ' |<_> || ' |<_> |/ . |/ ._>| '_>
+/__//__/|_|_||_|_|_|<___||_|_|<___|\_. |\___.|_|
+                                   <___'
+
+Easy way to remember your ssh conections.
 
 Usage:
     sshmanager init
