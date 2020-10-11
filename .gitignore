@@ -1,0 +1,8 @@
+# data-base data
+ssh-manager.db
+
+# Debug logs
+ssh-manager.log
+
+# Cache
+/manager/__pycache__
