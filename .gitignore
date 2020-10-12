@@ -1,5 +1,6 @@
 # data-base data
 ssh-manager.db
+/manager/dump.sql
 
 # Debug logs
 ssh-manager.log
