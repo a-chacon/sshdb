@@ -91,6 +91,36 @@ class SSHManager(object):
             # closing the connection
             conn.close()
 
+    def c(self):
+        # Short way to connnect
+        self.connect()
+
+    def connect(self):
+        # List available options
+        self.list()
+        option = pyip.inputNum("Where do you want to connect? (ID): ")
+        logger.debug(option)
+        query = "SELECT user || '@' || host, port FROM SSH WHERE id = ?"
+        # Conection for execute query
+        conn = sqlite3.connect("ssh-manager.db")
+        cursor = conn.cursor()
+        cursor.execute(query, [option])
+        # Get one
+        data = cursor.fetchone()
+        conn.close()
+        ssh = data[0]
+        port = data[1]
+        logger.debug("Conection find: " + ssh)
+        logger.debug("Port: " + port)
+        command = "ssh " + ssh + " -p " + port
+        logger.debug("Final command: " + command)
+        cprint("[.] Conecting...", "blue")
+        os.system(command)
+
+    def n(self):
+        # Short way for new
+        self.new()
+
     def new(self):
         self.check_init()
         print("Please enter the necesary data for save and create conections")
@@ -118,6 +148,7 @@ class SSHManager(object):
         cursor = conn.cursor()
         cursor.execute(query, data)
         conn.commit()
+        cprint("[!] Data saved. Look it in your list now.")
         conn.close()
 
     def check_init(self):
@@ -132,14 +163,19 @@ class SSHManager(object):
 
     def ask_for_new_record(self):
         # ASk for save the first ssh conection
-        answer = pyip.inputChoice(['ye  s', 'no', 'y','n'], "Do you want to create a new record with ssh data conection?(yes/no): ")
+        answer = pyip.inputChoice(['yes', 'no', 'y','n'], "Do you want to create a new record with ssh data conection?(yes/no): ")
         if answer in ['y', 'yes']:
             #remove old database and re-run this method
             self.new()
 
+    def l(self):
+        # Short way for list
+        self.list()
+
     def list(self):
+        # Add a subcommand to list a complete information
         self.check_init()
-        query = "SELECT id, alias, user || '@' || host || ':' || port, updated_at  FROM SSH"
+        query = "SELECT id, alias, user || '@' || host, port FROM SSH"
         conn = sqlite3.connect("ssh-manager.db")
         cursor = conn.cursor()
         cursor.execute(query)
@@ -148,8 +184,32 @@ class SSHManager(object):
             cprint("[!] You dont have saved conections.", 'yellow')
             self.ask_for_new_record()
         else:
-            print(tabulate(rows, headers=["id", "alias", "host" ,"last_update"]))
+            cprint("Your available ssh conections: \n","white", attrs=['bold'])
+            print(tabulate(rows, headers=["ID", "Alias", "Host", "Port"]))
         conn.close()
+
+    def r(self):
+        # Short way to remove
+        self.remove()
+
+    def remove(self):
+        self.list()
+        option = pyip.inputNum("Which do you want to remove? (ID): ")
+        cprint("[!] Removing a record...", "red")
+        confirm = pyip.inputChoice(['yes', 'no', 'y','n'], "Are you sure? (Yes/No): ")
+        if confirm in ['y', 'yes']:
+            query = "DELETE FROM SSH WHERE id=?"
+            conn = sqlite3.connect("ssh-manager.db")
+            cursor = conn.cursor()
+            cursor.execute(query, [option])
+            conn.commit()
+            conn.close()
+            cprint("[.] Removed.", "green")
+            self.list()
+
+    def e(self):
+        # Short way for export
+        self.export()
 
     def export(self):
         self.check_init()

@@ -1,1 +1,4 @@
-#PyInputPlus
+# Call with pip install -r requirements.txt
+PyInputPlus
+termcolor
+tabulate
