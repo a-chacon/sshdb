@@ -2,17 +2,9 @@ import os
 import getpass
 import pwd
 
-# This implementation is mostly for GUI support. See #168
-try:
-    USER = pwd.getpwuid(int(os.environ["PKEXEC_UID"])).pw_name
-except KeyError:
-    try:
-        USER = os.environ["SUDO_USER"]
-    except KeyError:
-        USER = getpass.getuser()
-
+USER = getpass.getuser()
+USER_HOME = pwd.getpwnam(USER).pw_dir
 VERSION = "1.0.0"
-
 TITLE = """
          _
  ___ ___| |_ ._ _ _  ___ ._ _  ___  ___  ___  _ _
@@ -21,7 +13,6 @@ TITLE = """
                                    <___'
 Easy way to remember your ssh conections.
 """
-
 USAGE = """
 Usage:
     sshmanager init

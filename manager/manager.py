@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # importing the required modules
 import os
 import sys
@@ -21,6 +22,7 @@ def main():
         logger.debug("###########################")
         logger.debug(sys.argv)
         logger.debug("USER: {0}".format(constants.USER))
+        logger.debug("USER HOME: {0}".format(constants.USER_HOME))
         SSHManager()
 
     except KeyboardInterrupt:
@@ -51,7 +53,7 @@ class SSHManager(object):
             parser.exit(1)
         elif not args.command or not hasattr(self, args.command) or args.help:
             cprint(constants.TITLE, 'green')
-            cprint(constants.USAGE, 'white')
+            cprint(constants.USAGE)
             parser.exit(1)
         # To the respective command
         cprint(constants.TITLE, 'green')
@@ -135,7 +137,7 @@ class SSHManager(object):
         if is_using_pem in ['y', 'yes']:
             # Remove old database and re-run this method
             is_using_pem = 1
-            pem_route = pyip.inputStr("Please give us the route to the pem(ex: /home/ubuntu/mykey.pem): ")
+            pem_route = pyip.inputStr("Give us the route to the pem(ex: /home/ubuntu/mykey.pem): ")
         else:
             is_using_pem = 0
             pem_route = ""
@@ -181,8 +183,7 @@ class SSHManager(object):
         cursor.execute(query)
         rows = cursor.fetchall()
         if len(rows) == 0:
-            cprint("[!] You dont have saved conections.", 'yellow')
-            self.ask_for_new_record()
+            cprint("[!] You dont have saved conections. Use ssh-manager n", 'yellow')
         else:
             cprint("Your available ssh conections: \n","white", attrs=['bold'])
             print(tabulate(rows, headers=["ID", "Alias", "Host", "Port"]))
@@ -212,16 +213,30 @@ class SSHManager(object):
         self.export()
 
     def export(self):
+        # Rewrite reciving the option
+        export_dir = constants.USER_HOME
+
         self.check_init()
         # I need to add more args and export to sql or csv, and export path
         con = sqlite3.connect('ssh-manager.db')
-        os.remove('dump.sql') if os.path.isfile('dump.sql') else logger.debug('No dump file created')
-        with open('dump.sql', 'w') as f:
+        os.remove(export_dir + '/dump.sql') if os.path.isfile(export_dir + '/dump.sql') else logger.debug('No dump file created')
+        with open(export_dir + '/dump.sql', 'w') as f:
             for line in con.iterdump():
                 f.write('%s\n' % line)
-        cprint("[.] A file with dump was created on this folder.","green")
+        cprint("[.] A file with dump was created: " + export_dir + "/dump.sql","green")
 
-    # def import(self):
-    #     print("Ismporting...")
-
+    def imp(self):
+        confirm = pyip.inputChoice(['yes', 'no', 'y','n'], "This action will remove all your previus data. Do you want continue? (Yes/No): ")
+        if confirm in ['y', 'yes']:
+            #open text file in read mode
+            text_file = open("/home/andres/dump.sql", "r")
+            #read whole file to a string
+            data = text_file.read()
+            #close file
+            text_file.close()
+            #open or generate new database
+            con = sqlite3.connect('ssh-manager.db')
+            cursor = con.cursor()
+            cursor.executescript(data)
+            cursor.close
 main()
