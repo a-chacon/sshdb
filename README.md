@@ -1,6 +1,6 @@
 # SSHManager
 
-![alt text](https://github.com/Taurus95/ssh-manager.git/blob/main/screenshot.png?raw=true)
+![alt text](https://github.com/Taurus95/ssh-manager/blob/main/resources/screenshot.png?raw=true)
 
 ## Getting Started
 
