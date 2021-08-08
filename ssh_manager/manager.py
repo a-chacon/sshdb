@@ -3,14 +3,16 @@
 import os
 import sys
 import sqlite3
-import logger
-import constants
 import pyinputplus as pyip
 import argparse
+import pathlib
 from datetime import datetime
 from termcolor import colored, cprint
 from tabulate import tabulate
-from logger import logger
+from .logger import logger
+from .constants import (
+    USER_HOME, USER, TITLE, USAGE, VERSION
+)
 
 def main():
     """Main function"""
@@ -21,8 +23,8 @@ def main():
         logger.debug("### NEW PROCESS STARTED ###")
         logger.debug("###########################")
         logger.debug(sys.argv)
-        logger.debug("USER: {0}".format(constants.USER))
-        logger.debug("USER HOME: {0}".format(constants.USER_HOME))
+        logger.debug("USER: {0}".format(USER))
+        logger.debug("USER HOME: {0}".format(USER_HOME))
         SSHManager()
 
     except KeyboardInterrupt:
@@ -35,7 +37,7 @@ class SSHManager(object):
 
     def __init__(self):
         parser = argparse.ArgumentParser(
-            prog="sshmanager",
+            prog="ssh-manager",
             add_help=False
         )
 
@@ -48,15 +50,15 @@ class SSHManager(object):
         logger.debug("Main argument\n{0}".format(args))
         logger.debug("All arguments\n{0}".format(sys.argv))
 
+        cprint(TITLE, 'green')
+
         if args.version:
-            cprint("SSHManager CLI v.{}".format(constants.VERSION), 'white')
+            cprint("SSHManager CLI v.{}".format(VERSION), 'white')
             parser.exit(1)
         elif not args.command or not hasattr(self, args.command) or args.help:
-            cprint(constants.TITLE, 'green')
-            cprint(constants.USAGE)
+            cprint(USAGE)
             parser.exit(1)
         # To the respective command
-        cprint(constants.TITLE, 'green')
         getattr(self, args.command)()
 
 
@@ -213,11 +215,20 @@ class SSHManager(object):
         self.export()
 
     def export(self):
-        # Rewrite reciving the option
-        export_dir = constants.USER_HOME
-
         self.check_init()
-        # I need to add more args and export to sql or csv, and export path
+        # Rewrite reciving the option
+        export_dir = USER_HOME
+        ## Sub Args
+        parser = argparse.ArgumentParser(description="Exporting data", prog="ssh-manager e")
+        group = parser.add_mutually_exclusive_group()
+        group.add_argument("--path", nargs="?", help="Destination path.", type=pathlib.Path)
+        # group.add_argument("--extension", nargs="?", help="File extension.", choices=['csv', 'sql'])
+        # Check args
+        args = parser.parse_args(sys.argv[2:])
+        logger.debug("Sub-arguments:\n{0}".format(args))
+        if(args.path):
+            export_dir = str(args.path)
+        ## Export
         con = sqlite3.connect('ssh-manager.db')
         os.remove(export_dir + '/dump.sql') if os.path.isfile(export_dir + '/dump.sql') else logger.debug('No dump file created')
         with open(export_dir + '/dump.sql', 'w') as f:
@@ -225,18 +236,34 @@ class SSHManager(object):
                 f.write('%s\n' % line)
         cprint("[.] A file with dump was created: " + export_dir + "/dump.sql","green")
 
-    def imp(self):
+    def i(self):
+        self.importing()
+
+    def importing(self):
+        import_path = USER_HOME + "/dump.sql"
+        ## Sub Args
+        parser = argparse.ArgumentParser(description="Importing data", prog="ssh-manager i")
+        group = parser.add_mutually_exclusive_group()
+        group.add_argument("--path", nargs="?", help="File path.", type=pathlib.Path)
+        # Check args
+        args = parser.parse_args(sys.argv[2:])
+        logger.debug("Sub-arguments:\n{0}".format(args))
+        if(args.path):
+            import_path = str(args.path)
+        # Check action
         confirm = pyip.inputChoice(['yes', 'no', 'y','n'], "This action will remove all your previus data. Do you want continue? (Yes/No): ")
         if confirm in ['y', 'yes']:
             #open text file in read mode
-            text_file = open("/home/andres/dump.sql", "r")
+            text_file = open(import_path, "r")
             #read whole file to a string
             data = text_file.read()
             #close file
             text_file.close()
             #open or generate new database
+            os.remove('ssh-manager.db')
             con = sqlite3.connect('ssh-manager.db')
             cursor = con.cursor()
             cursor.executescript(data)
             cursor.close
-main()
+            cprint("[.] New database ready.", "yellow")
+            self.list()

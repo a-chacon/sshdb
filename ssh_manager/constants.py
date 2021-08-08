@@ -4,7 +4,7 @@ import pwd
 
 USER = getpass.getuser()
 USER_HOME = pwd.getpwnam(USER).pw_dir
-VERSION = "1.0.0"
+VERSION = "0.0.1"
 TITLE = """
          _
  ___ ___| |_ ._ _ _  ___ ._ _  ___  ___  ___  _ _
@@ -20,7 +20,6 @@ Usage:
     sshmanager (  n |   new )
     sshmanager (  l |   list )
     sshmanager (  r |   remove )
-    sshmanager (  u |   update )
     sshmanager (  e |   export )
     sshmanager (  i |   import )
     sshmanager ( -h | --help )
@@ -28,15 +27,14 @@ Usage:
 
 Commands:
     init                Initialize a SSHManager profile.
-    connect             Create a new ssh conection to the give id record.
-    new                 Save a new data conection.
-    remove              Remove a data conection.
-    update              Update a data conection.
+    connect             Create a new ssh conection from a record.
+    new                 Create new record.
+    remove              Remove a record.
     list                List available conections.
-    export              Export the entired db.
-    import              Import the entired db from another sshmanager.
+    export              Export the entire db.
+    import              Import the entire db from another sshmanager.
 
 Example:
-    sshmanager connect 2
-    sshmanager export -p /home/ubuntu -e csv
+    sshmanager connect
+    sshmanager export --path /home/ubuntu
 """
