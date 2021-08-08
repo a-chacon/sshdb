@@ -1,6 +1,6 @@
 # SSHManager
 
-![alt text](https://github.com/Taurus95/ssh-manager/blob/main/resources/screenshot.png?raw=true)
+![Screenshot of the app](https://github.com/Taurus95/ssh-manager/blob/main/resources/screenshot.png?raw=true)
 
 ## Getting Started
 
@@ -8,10 +8,8 @@ Simple script that save your ssh conection's data on a sqlite database. You can 
 
 ### Prerequisites
 
-```
-Python 3
-```
-And install the modules on requirements.txt
+- Python > 3
+- Install requirements.txt
 
 ### Installing
 
@@ -27,15 +25,6 @@ python3 -m pip install .
 See all options:
 ```
 ssh-manager -h
-```
-
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
 ```
 
 ## Deployment
