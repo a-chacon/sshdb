@@ -4,6 +4,9 @@ import pwd
 
 USER = getpass.getuser()
 USER_HOME = pwd.getpwnam(USER).pw_dir
+
+CONFIG_DIR = os.path.join(os.path.expanduser("~{0}".format(USER)), ".ssh-manager")
+
 VERSION = "0.0.1"
 TITLE = """
          _

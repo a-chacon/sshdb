@@ -11,7 +11,7 @@ from termcolor import colored, cprint
 from tabulate import tabulate
 from .logger import logger
 from .constants import (
-    USER_HOME, USER, TITLE, USAGE, VERSION
+    USER_HOME, USER, TITLE, USAGE, VERSION, CONFIG_DIR
 )
 
 def main():
@@ -63,7 +63,7 @@ class SSHManager(object):
 
 
     def init(self):
-        if os.path.isfile('ssh-manager.db'):
+        if os.path.isfile(CONFIG_DIR + '/ssh-manager.db'):
 
             cprint("[!] A database is already configured.", 'yellow')
             answer = pyip.inputChoice(['yes', 'no', 'y','n'], "Do you want remove it? (Yes/No): ")
@@ -71,14 +71,14 @@ class SSHManager(object):
             if answer in ['y', 'yes', 'Yes']:
                 # Remove old database and re-run this method
                 print("remove it")
-                os.remove('ssh-manager.db')
+                os.remove(CONFIG_DIR + '/ssh-manager.db')
                 self.init()
             else:
                 self.list()
 
         else:
             cprint("[i] Creating new database.", 'yellow')
-            conn = sqlite3.connect("ssh-manager.db")
+            conn = sqlite3.connect(CONFIG_DIR + "/ssh-manager.db")
             # The table structure for save configuration of conections
             conn.execute('''CREATE TABLE SSH(id INTEGER PRIMARY KEY AUTOINCREMENT,
                 alias TEXT NOT NULL,
@@ -100,13 +100,14 @@ class SSHManager(object):
         self.connect()
 
     def connect(self):
+        self.check_init()
         # List available options
         self.list()
         option = pyip.inputNum("Where do you want to connect? (ID): ")
         logger.debug(option)
         query = "SELECT user || '@' || host, port FROM SSH WHERE id = ?"
         # Conection for execute query
-        conn = sqlite3.connect("ssh-manager.db")
+        conn = sqlite3.connect(CONFIG_DIR + "/ssh-manager.db")
         cursor = conn.cursor()
         cursor.execute(query, [option])
         # Get one
@@ -148,7 +149,7 @@ class SSHManager(object):
 
         query = "INSERT INTO SSH(alias, user, host, port, is_using_pem, pem_route, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)"
         data = (alias, user, host, port, is_using_pem, pem_route,datetime.now().strftime("%Y-%m-%d %H:%M:%S"),datetime.now().strftime("%Y-%m-%d %H:%M:%S") )
-        conn = sqlite3.connect("ssh-manager.db")
+        conn = sqlite3.connect(CONFIG_DIR + "/ssh-manager.db")
         cursor = conn.cursor()
         cursor.execute(query, data)
         conn.commit()
@@ -156,7 +157,7 @@ class SSHManager(object):
         conn.close()
 
     def check_init(self):
-        if os.path.isfile('ssh-manager.db'):
+        if os.path.isfile(CONFIG_DIR + '/ssh-manager.db'):
             return True
         else:
             cprint("[!]-------------------------------------------[!]", 'red')
@@ -180,7 +181,7 @@ class SSHManager(object):
         # Add a subcommand to list a complete information
         self.check_init()
         query = "SELECT id, alias, user || '@' || host, port FROM SSH"
-        conn = sqlite3.connect("ssh-manager.db")
+        conn = sqlite3.connect(CONFIG_DIR + "/ssh-manager.db")
         cursor = conn.cursor()
         cursor.execute(query)
         rows = cursor.fetchall()
@@ -202,7 +203,7 @@ class SSHManager(object):
         confirm = pyip.inputChoice(['yes', 'no', 'y','n'], "Are you sure? (Yes/No): ")
         if confirm in ['y', 'yes']:
             query = "DELETE FROM SSH WHERE id=?"
-            conn = sqlite3.connect("ssh-manager.db")
+            conn = sqlite3.connect(CONFIG_DIR + "/ssh-manager.db")
             cursor = conn.cursor()
             cursor.execute(query, [option])
             conn.commit()
@@ -229,7 +230,7 @@ class SSHManager(object):
         if(args.path):
             export_dir = str(args.path)
         ## Export
-        con = sqlite3.connect('ssh-manager.db')
+        con = sqlite3.connect(CONFIG_DIR + '/ssh-manager.db')
         os.remove(export_dir + '/dump.sql') if os.path.isfile(export_dir + '/dump.sql') else logger.debug('No dump file created')
         with open(export_dir + '/dump.sql', 'w') as f:
             for line in con.iterdump():
@@ -260,8 +261,8 @@ class SSHManager(object):
             #close file
             text_file.close()
             #open or generate new database
-            os.remove('ssh-manager.db')
-            con = sqlite3.connect('ssh-manager.db')
+            os.remove(CONFIG_DIR + '/ssh-manager.db')
+            con = sqlite3.connect(CONFIG_DIR + '/ssh-manager.db')
             cursor = con.cursor()
             cursor.executescript(data)
             cursor.close
