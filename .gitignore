@@ -1,9 +1,9 @@
 # data-base data
 ssh-manager.db
-/manager/dump.sql
+/ssh_manager/dump.sql
 
 # Debug logs
 ssh-manager.log
 
 # Cache
-/manager/__pycache__
+/ssh_manager/__pycache__
