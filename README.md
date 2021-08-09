@@ -38,7 +38,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Authors
 
-* **Andres Chacon** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Taurus95** - *Initial work* - [Taurus95](https://github.com/taurus95)
 
 
 ## License
