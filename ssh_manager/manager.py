@@ -102,23 +102,33 @@ class SSHManager(object):
     def connect(self):
         self.check_init()
         # List available options
-        self.list()
-        option = pyip.inputNum("Where do you want to connect? (ID): ")
-        logger.debug(option)
-        query = "SELECT user || '@' || host, port FROM SSH WHERE id = ?"
+        ## Sub Args
+        parser = argparse.ArgumentParser(description="Conect to a previus saved destination", prog="ssh-manager c")
+        # group = parser.add_mutually_exclusive_group()
+        parser.add_argument("connection", help="id of record in database")
+        args = parser.parse_args(sys.argv[2:])
+        logger.debug("Sub-arguments:\n{0}".format(args))
+        if args.connection:
+            # No need to list
+            option = args.connection
+        else:
+            # List and select
+            self.list()
+            option = pyip.inputNum("Where do you want to connect? (ID): ")
+        # Define the query
+        # TODO: Check if the connection use .pem file
+        query = f"SELECT user || '@' || host, port FROM SSH WHERE (id LIKE '%{option}%' OR alias LIKE '%{option}%')"
+        logger.debug(query)
         # Conection for execute query
         conn = sqlite3.connect(CONFIG_DIR + "/ssh-manager.db")
         cursor = conn.cursor()
-        cursor.execute(query, [option])
+        cursor.execute(query)
         # Get one
         data = cursor.fetchone()
         conn.close()
-        ssh = data[0]
-        port = data[1]
-        logger.debug("Conection find: " + ssh)
-        logger.debug("Port: " + port)
+        ssh, port = data[0], data[1]
         command = "ssh " + ssh + " -p " + port
-        logger.debug("Final command: " + command)
+        logger.debug(f"Conection: {ssh}, Port: {port}, Final command: {command}")
         cprint("[.] Conecting...", "blue")
         os.system(command)
 
@@ -145,7 +155,7 @@ class SSHManager(object):
             is_using_pem = 0
             pem_route = ""
         # An alias
-        alias = pyip.inputStr("Finally choice an alias for make it easy to find: ")
+        alias = pyip.inputStr("Finally choice an alias for make it easy to find: ").lower().replace(" ", "_")
 
         query = "INSERT INTO SSH(alias, user, host, port, is_using_pem, pem_route, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?)"
         data = (alias, user, host, port, is_using_pem, pem_route,datetime.now().strftime("%Y-%m-%d %H:%M:%S"),datetime.now().strftime("%Y-%m-%d %H:%M:%S") )
