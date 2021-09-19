@@ -105,7 +105,7 @@ class SSHManager(object):
         ## Sub Args
         parser = argparse.ArgumentParser(description="Conect to a previus saved destination", prog="ssh-manager c")
         # group = parser.add_mutually_exclusive_group()
-        parser.add_argument("connection", help="id of record in database")
+        parser.add_argument("connection", help="id of record in database", nargs='?')
         args = parser.parse_args(sys.argv[2:])
         logger.debug("Sub-arguments:\n{0}".format(args))
         if args.connection:

@@ -7,3 +7,4 @@ ssh-manager.log
 
 # Cache
 /ssh_manager/__pycache__
+/ssh_manager.egg-info/*
