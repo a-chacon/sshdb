@@ -1,10 +1,10 @@
-# SSHDB
+# sshdb
 
 ![Gif of the app](https://github.com/Taurus95/ssh-manager/blob/main/resources/sshdb.gif)
 
 ## Getting Started
 
-Simple script that save your ssh conection's data on a sqlite database. You can save the specific data for a host and select it for a create a conection through ssh.
+Simple cli tool that save your ssh conection's data on a sqlite database. You can save the specific data for a host and select it for a create a conection through ssh.
 
 ### Prerequisites
 
@@ -13,12 +13,11 @@ Simple script that save your ssh conection's data on a sqlite database. You can 
 
 ### Installing
 
-For now the package is not public on PyPI so download this repository and go inside the folder for execute:
+Install it with pip:
 
 ```
-python3 -m pip install .
+python3 -m pip install sshdb
 ```
-
 
 ## Usage
 
@@ -26,10 +25,6 @@ See all options:
 ```
 sshdb -h
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
@@ -39,7 +34,6 @@ Add additional notes about how to deploy this on a live system
 ## Authors
 
 * **Taurus95** - *Initial work* - [Taurus95](https://github.com/taurus95)
-
 
 ## License
 
