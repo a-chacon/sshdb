@@ -4,17 +4,17 @@ from setuptools import setup
 
 
 setup(
-    name="ssh_manager",
-    packages=["ssh_manager"],
+    name="sshme-taurus95",
+    packages=["sshme"],
     entry_points={
-        "console_scripts": ["ssh-manager = ssh_manager.manager:main"]
+        "console_scripts": ["sshme = sshme.manager:main"]
     },
     version="0.0.1",
     description="Linux command-line ssh data conection manager",
-    author="Taurus95",
+    author="taurus95",
     author_email="andres.ch@protonmail.com",
     license="GPLv3",
-    url="https://github.com/Taurus95/ssh-manager",
+    url="https://github.com/Taurus95/sshme",
     install_requires=[
         "PyInputPlus",
         "termcolor",

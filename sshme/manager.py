@@ -172,7 +172,7 @@ class SSHManager(object):
         else:
             cprint("[!]-------------------------------------------[!]", 'red')
             cprint("[!] You must Initialize the app first!", 'red', attrs=['bold'])
-            cprint("[.] Run the command: sshmanager init", 'yellow', attrs=['bold'])
+            cprint("[.] Run the command: sshme init", 'yellow', attrs=['bold'])
             cprint("[!]-------------------------------------------[!]", 'red')
             sys.exit(1)
 
