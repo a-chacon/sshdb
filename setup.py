@@ -4,17 +4,17 @@ from setuptools import setup
 
 
 setup(
-    name="sshme-taurus95",
-    packages=["sshme"],
+    name="sshdb",
+    packages=["sshdb"],
     entry_points={
-        "console_scripts": ["sshme = sshme.manager:main"]
+        "console_scripts": ["sshdb = sshdb.manager:main"]
     },
     version="0.0.1",
     description="Linux command-line ssh data conection manager",
     author="taurus95",
     author_email="andres.ch@protonmail.com",
     license="GPLv3",
-    url="https://github.com/Taurus95/sshme",
+    url="https://github.com/Taurus95/sshdb",
     install_requires=[
         "PyInputPlus",
         "termcolor",
@@ -22,7 +22,6 @@ setup(
     ],
     python_requires=">=3.5",
     classifiers=[
-        "Development Status :: 1 - Beta",
         "Environment :: Console",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Programming Language :: Python",

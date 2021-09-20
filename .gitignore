@@ -7,4 +7,4 @@ ssh-manager.log
 
 # Cache
 /ssh_manager/__pycache__
-/sshme_taurus95.egg-info/*
+/sshdb.egg-info/*

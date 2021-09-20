@@ -1,4 +1,4 @@
-# SSHManager
+# SSHDB
 
 ![Screenshot of the app](https://github.com/Taurus95/ssh-manager/blob/main/resources/screenshot.png?raw=true)
 
@@ -24,7 +24,7 @@ python3 -m pip install .
 
 See all options:
 ```
-ssh-manager -h
+sshdb -h
 ```
 
 ## Deployment

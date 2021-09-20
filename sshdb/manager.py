@@ -33,11 +33,11 @@ def main():
 
 
 class SSHManager(object):
-    """docstring for SSHManager."""
+    """docstring for SSHDB."""
 
     def __init__(self):
         parser = argparse.ArgumentParser(
-            prog="ssh-manager",
+            prog="sshdb",
             add_help=False
         )
 
@@ -53,7 +53,7 @@ class SSHManager(object):
         cprint(TITLE, 'green')
 
         if args.version:
-            cprint("SSHManager CLI v.{}".format(VERSION), 'white')
+            cprint("SSHDB CLI v.{}".format(VERSION), 'white')
             parser.exit(1)
         elif not args.command or not hasattr(self, args.command) or args.help:
             cprint(USAGE)
@@ -103,7 +103,7 @@ class SSHManager(object):
         self.check_init()
         # List available options
         ## Sub Args
-        parser = argparse.ArgumentParser(description="Conect to a previus saved destination", prog="ssh-manager c")
+        parser = argparse.ArgumentParser(description="Conect to a previus saved destination", prog="sshdb c")
         # group = parser.add_mutually_exclusive_group()
         parser.add_argument("connection", help="id of record in database", nargs='?')
         args = parser.parse_args(sys.argv[2:])
@@ -172,7 +172,7 @@ class SSHManager(object):
         else:
             cprint("[!]-------------------------------------------[!]", 'red')
             cprint("[!] You must Initialize the app first!", 'red', attrs=['bold'])
-            cprint("[.] Run the command: sshme init", 'yellow', attrs=['bold'])
+            cprint("[.] Run the command: sshdb init", 'yellow', attrs=['bold'])
             cprint("[!]-------------------------------------------[!]", 'red')
             sys.exit(1)
 
@@ -253,7 +253,7 @@ class SSHManager(object):
     def importing(self):
         import_path = USER_HOME + "/dump.sql"
         ## Sub Args
-        parser = argparse.ArgumentParser(description="Importing data", prog="ssh-manager i")
+        parser = argparse.ArgumentParser(description="Importing data", prog="sshdb i")
         group = parser.add_mutually_exclusive_group()
         group.add_argument("--path", nargs="?", help="File path.", type=pathlib.Path)
         # Check args
@@ -271,7 +271,7 @@ class SSHManager(object):
             #close file
             text_file.close()
             #open or generate new database
-            os.remove(CONFIG_DIR + '/ssh-manager.db')
+            # os.remove(CONFIG_DIR + '/ssh-manager.db')
             con = sqlite3.connect(CONFIG_DIR + '/ssh-manager.db')
             cursor = con.cursor()
             cursor.executescript(data)
