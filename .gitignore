@@ -1,10 +1,10 @@
 # data-base data
 ssh-manager.db
-/ssh_manager/dump.sql
+/sshdb/dump.sql
 
 # Debug logs
 ssh-manager.log
 
 # Cache
-/ssh_manager/__pycache__
+/sshdb/__pycache__/*
 /sshdb.egg-info/*

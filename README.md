@@ -1,6 +1,6 @@
 # SSHDB
 
-![Screenshot of the app](https://github.com/Taurus95/ssh-manager/blob/main/resources/screenshot.png?raw=true)
+![Gif of the app](https://github.com/Taurus95/ssh-manager/blob/main/resources/sshdb.gif)
 
 ## Getting Started
 

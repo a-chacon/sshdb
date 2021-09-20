@@ -2,6 +2,8 @@
 
 from setuptools import setup
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
 
 setup(
     name="sshdb",
@@ -9,8 +11,10 @@ setup(
     entry_points={
         "console_scripts": ["sshdb = sshdb.manager:main"]
     },
-    version="0.0.1",
-    description="Linux command-line ssh data conection manager",
+    version="0.0.2",
+    description="Linux command-line for save ssh connection`s data",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author="taurus95",
     author_email="andres.ch@protonmail.com",
     license="GPLv3",
