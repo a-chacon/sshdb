@@ -5,6 +5,9 @@ ssh-manager.db
 # Debug logs
 ssh-manager.log
 
+# pycache
+__pycache__
+__pycache__/
+
 # Cache
-/sshdb/__pycache__/*
 /sshdb.egg-info/*

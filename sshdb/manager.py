@@ -254,8 +254,8 @@ class SSHManager(object):
         import_path = USER_HOME + "/dump.sql"
         ## Sub Args
         parser = argparse.ArgumentParser(description="Importing data", prog="sshdb i")
-        group = parser.add_mutually_exclusive_group()
-        group.add_argument("--path", nargs="?", help="File path.", type=pathlib.Path)
+        group = parser.add_argument_group()
+        group.add_argument("--path", help="File path.", type=pathlib.Path, required=True)
         # Check args
         args = parser.parse_args(sys.argv[2:])
         logger.debug("Sub-arguments:\n{0}".format(args))
