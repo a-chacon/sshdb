@@ -33,7 +33,7 @@ sshdb -h
 
 ## Authors
 
-* **Taurus95** - *Initial work* - [Taurus95](https://github.com/taurus95)
+* **a-chacon** - *Initial work* - [a-chacon](https://github.com/a-chacon)
 
 ## License
 
