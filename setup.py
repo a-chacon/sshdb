@@ -11,14 +11,14 @@ setup(
     entry_points={
         "console_scripts": ["sshdb = sshdb.manager:main"]
     },
-    version="0.0.2",
+    version="0.0.3",
     description="Linux command-line for save ssh connection`s data",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author="taurus95",
+    author="a-chacon",
     author_email="andres.ch@protonmail.com",
     license="GPLv3",
-    url="https://github.com/Taurus95/sshdb",
+    url="https://github.com/a-chacon/sshdb",
     install_requires=[
         "PyInputPlus",
         "termcolor",
