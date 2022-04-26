@@ -1,6 +1,6 @@
 # sshdb
 
-![Gif of the app](https://github.com/a-chacon/ssh-manager/blob/main/resources/sshdb.gif)
+![Gif of the app](https://github.com/a-chacon/sshdb/blob/main/resources/sshdb.gif)
 
 ## Getting Started
 
